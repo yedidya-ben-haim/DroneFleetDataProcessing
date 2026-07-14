@@ -2,9 +2,11 @@ using System;
 using System.IO;
 using System.Text.Json;
 using System.Collections.Generic;
-using Sensors;
-using DroneSpace;
-using ExceptionNassege;
+using DroneFleetDataProcessing.FileHandling;    // מייבא את מחלקת הטעינה
+using DroneFleetDataProcessing.Models.Sensors; // מייבא את הרחפן
+using DroneFleetDataProcessing.Exceptions;     // מייבא את השגיאות שלך
+
+namespace DroneFleetDataProcessing.Pipeline;
 
 class Program
 {
@@ -38,5 +40,7 @@ class Program
         {
             Console.WriteLine($"Error accured: {ex.Message}");
         }
+
+
     }
 }

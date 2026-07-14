@@ -1,6 +1,6 @@
 
 using System;
-namespace DroneSpace;
+namespace DroneFleetDataProcessing.Models.Sensors;
 public class Drone
 {
     public int id { get; }
