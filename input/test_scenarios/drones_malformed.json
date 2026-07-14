@@ -1,0 +1,12 @@
+{
+  "drones": [
+    {
+      "id": 1,
+      "serialNumber": "DR-0001",
+      "model": "Falcon-X",
+      "category": "Recon",
+      "base": "North"
+      "flightHours": 100
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+[
+  {
+    "id": 0,
+    "serialNumber": "DR-0001",
+    "model": "Falcon-X",
+    "category": "Recon",
+    "base": "North",
+    "flightHours": 348.5,
+    "batteryHealth": 87,
+    "maxRangeKm": 42.5,
+    "missionsCompleted": 119,
+    "status": "Operational"
+  },
+  {
+    "id": 2,
+    "serialNumber": "DR-002",
+    "model": "Falcon-X",
+    "category": "Recon",
+    "base": "North",
+    "flightHours": 348.5,
+    "batteryHealth": 87,
+    "maxRangeKm": 42.5,
+    "missionsCompleted": 119,
+    "status": "Operational"
+  },
+  {
+    "id": 3,
+    "serialNumber": "DR-0003",
+    "model": "InvalidModel",
+    "category": "Recon",
+    "base": "North",
+    "flightHours": 348.5,
+    "batteryHealth": 87,
+    "maxRangeKm": 42.5,
+    "missionsCompleted": 119,
+    "status": "Operational"
+  },
+  {
+    "id": 4,
+    "serialNumber": "DR-0004",
+    "model": "Falcon-X",
+    "category": "InvalidCategory",
+    "base": "North",
+    "flightHours": 348.5,
+    "batteryHealth": 87,
+    "maxRangeKm": 42.5,
+    "missionsCompleted": 119,
+    "status": "Operational"
+  },
+  {
+    "id": 5,
+    "serialNumber": "DR-0005",
+    "model": "Falcon-X",
+    "category": "Recon",
+    "base": "InvalidBase",
+    "flightHours": 348.5,
+    "batteryHealth": 87,
+    "maxRangeKm": 42.5,
+    "missionsCompleted": 119,
+    "status": "Operational"
+  },
+  {
+    "id": 6,
+    "serialNumber": "DR-0006",
+    "model": "Falcon-X",
+    "category": "Recon",
+    "base": "North",
+    "flightHours": 3000,
+    "batteryHealth": 87,
+    "maxRangeKm": 42.5,
+    "missionsCompleted": 119,
+    "status": "Operational"
+  },
+  {
+    "id": 7,
+    "serialNumber": "DR-0007",
+    "model": "Falcon-X",
+    "category": "Recon",
+    "base": "North",
+    "flightHours": 348.5,
+    "batteryHealth": 150,
+    "maxRangeKm": 42.5,
+    "missionsCompleted": 119,
+    "status": "Operational"
+  },
+  {
+    "id": 8,
+    "serialNumber": "DR-0008",
+    "model": "Falcon-X",
+    "category": "Recon",
+    "base": "North",
+    "flightHours": 348.5,
+    "batteryHealth": 87,
+    "maxRangeKm": 200,
+    "missionsCompleted": 119,
+    "status": "Operational"
+  },
+  {
+    "id": 9,
+    "serialNumber": "DR-0009",
+    "model": "Falcon-X",
+    "category": "Recon",
+    "base": "North",
+    "flightHours": 348.5,
+    "batteryHealth": 87,
+    "maxRangeKm": 42.5,
+    "missionsCompleted": 6000,
+    "status": "Operational"
+  },
+  {
+    "id": 10,
+    "serialNumber": "DR-0010",
+    "model": "Falcon-X",
+    "category": "Recon",
+    "base": "North",
+    "flightHours": 348.5,
+    "batteryHealth": 15,
+    "maxRangeKm": 42.5,
+    "missionsCompleted": 119,
+    "status": "Operational"
+  }
+]
