@@ -1,3 +1,6 @@
-using Sustem;
-namespace ExceptionMessage;
-public class 
+using System;
+namespace ExceptionNassege;
+public class FileIsEmptyOrWhiteSpace : Exception
+{
+    public FileIsEmptyOrWhiteSpace(string massege) : base(massege) { }
+}
