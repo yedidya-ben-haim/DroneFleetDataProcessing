@@ -25,4 +25,17 @@ public class LoadFromJson
 
         return JsonSerializer.Deserialize<List<Drone>>(fileContent) ?? new List<Drone>();
     }
+
+    public static void saveToJson(string path, List<Drone> drones) 
+    {
+        if(drones == null)
+        {
+            throw new ArgumentNullException(nameof(drones), "Drone list cannot be empty");
+        }
+        var options = new JsonSerializerOptions{ WriteIndented = true };
+
+        string jsonString = JsonSerializer.Serialize(drones, options);
+
+        File.WriteAllText(path, jsonString);
+    }
 }
