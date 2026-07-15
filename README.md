@@ -17,16 +17,18 @@ A system for processing and analyzing drone fleet data
 
 ---
 
-## חוקים עסקיים
+## Business laws
 
-כתוב את הכללים שהמערכת חייבת לאכוף.
 
-**דוגמה:**
 
-- מזהה חייב להיות מספר חיובי
-- קטגוריה לא יכולה להיות ריקה
-- עדיפות חייבת להיות בין 1 ל־5
-- דוח לא תקין לא נשמר ברשימת הדוחות התקינים
+- id - must be greater than zero, must be unique in the entire file.
+- serialNumber - cannot be empty or contain only spaces, must be unique, must be in exact format: DR-XXXX
+- model - Must be of legal values ​​only.
+- category - Must be of legal values ​​only.
+- base_location - Must be of legal values ​​only.
+- flightHours - Must be a number in the range 0 - 2500.
+- batteryHealth - Must be a number in the range 0- 100.
+
 
 ---
 
@@ -84,10 +86,10 @@ DroneFleetDataProcessing/
 
 ## Clasess
 
-| מחלקה | אחריות |
+| Clases | Responsibility |
 |---------|------|
 | `Drone`   | Represents a drone and includes the report data |
-| `JsonHandle` | Manages loading and saving to JSON |
+|  | Manages loading and saving to JSON |
 |  |  |
 |  |  |
 
@@ -113,53 +115,37 @@ Performing LINQ analyses
 Generating a text report
 ```
 
-**דוגמה:**
-
-1. המשתמש מזין מזהה, קטגוריה ועדיפות.
-2. המערכת יוצרת אובייקט מסוג `Report`.
-3. ה־Validator בודק את הנתונים.
-4. אם הדוח תקין, הוא נשמר.
-5. אם הדוח אינו תקין, מוצגת הודעת שגיאה.
 
 ---
 
-## דוגמת שימוש
+## Example of use
 
 ```csharp
-var report = new Report(
-    id: 1,
-    category: "SIGNAL",
-    priority: 4
-);
 
-reportService.AddReport(report);
 ```
 
-**פלט אפשרי:**
+**Possible output:**
 
 ```text
-Report added successfully.
+
 ```
 
 ---
 
-## טכנולוגיות
+## Technologies
 
 - C#
 - .NET
-- System.Text.Json
-- Console Application
 
-מחק טכנולוגיות שאינן בשימוש והוסף את מה שרלוונטי לפרויקט.
+
 
 ---
 
-## איך מריצים את הפרויקט
+## How to run the project
 
-1. הורד או שכפל את הפרויקט.
-2. פתח את התיקייה ב־Visual Studio או ב־VS Code.
-3. ודא ש־.NET מותקן.
-4. הרץ:
+1.
+2.
+3.
 
 ```bash
 dotnet run
@@ -167,48 +153,27 @@ dotnet run
 
 ---
 
-## בדיקות שבוצעו
+## Tests performed
 
-| תרחיש | תוצאה צפויה |
+| scenario | Expected result |
 |---|---|
-| הוספת דוח תקין | הדוח נשמר |
-| מזהה שלילי | מתקבלת שגיאה |
-| קטגוריה ריקה | מתקבלת שגיאה |
-| עדיפות מעל 5 | מתקבלת שגיאה |
-| קובץ לא קיים | מוצגת הודעה מתאימה |
 
 ---
 
-## החלטות תכנון
+## Planning decisions
 
-כתוב בקצרה החלטות חשובות שקיבלת.
 
-**דוגמה:**
 
-- הפרדתי את האימות למחלקה נפרדת כדי שהמחלקה `Report` לא תהיה אחראית גם על בדיקות.
-- השתמשתי ב־Repository כדי להפריד בין הלוגיקה העסקית לשמירת הנתונים.
-- בפרויקט הנוכחי השתמשתי ברשימה בזיכרון במקום במסד נתונים.
-
+- 
+- 
+- 
 ---
 
-## דברים לשיפור בהמשך
-
-- הוספת ממשק משתמש
-- חיבור למסד נתונים
-- הוספת Unit Tests
-- תמיכה בסוגי דוחות נוספים
-- שיפור הטיפול בשגיאות
-
----
-
-
-
----
 
 ## Division of responsibility
 
-### Pesach:
+### Pesach: FileHandling, Models, Exceptions, ReportLogger, Storage, 
 
-### Yedidya:
+### Yedidya: Validators, README, GitHub
 
 </div>
