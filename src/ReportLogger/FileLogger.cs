@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 namespace DroneFleetDataProcessing.ReportLogger;
-public class FileLogger :ICommandLogger
+public class FileLogger : ICommandLogger
 {
     private readonly string filePath;
 
@@ -11,8 +11,7 @@ public class FileLogger :ICommandLogger
     }
 
     public void log(string str)
-    {
-        Console.WriteLine(str);
+    { 
         File.AppendAllText(filePath, $"{str}{Environment.NewLine}");
     }
 }
