@@ -1,3 +1,6 @@
+
+using System;
+namespace DroneFleetDataProcessing.Models.Sensors;
 public class Drone
 {
     public int id { get; }
@@ -10,7 +13,10 @@ public class Drone
     public double maxRangeKm { get; }
     public int missionsCompleted { get; }
     public string? status { get; }
+
     public Drone() { }
+
+    // ????? ??? ????? (_) ???? ?? ?????? ???? ?? ????? ?-this
     public Drone(
         int _id,
         string? _serialNumber,
