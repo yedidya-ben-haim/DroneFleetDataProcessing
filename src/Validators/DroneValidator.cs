@@ -1,11 +1,22 @@
-namespace DroneFleetDataProcessing.Validators
+using DroneFleetDataProcessing.Models.Sensors;
+
+namespace DroneFleetDataProcessing.validation
 {
     public class DroneValidator
     {
         public bool Validate(Drone drone)
         {
             return IsIdValid(drone.id)
-                && IsSerialNumberValid(drone.serialNumber);
+                && IsSerialNumberValid(drone.serialNumber)
+                && IsModelValid(drone.model)
+                && IsCategoryValid(drone.category)
+                && IsBaseLocationValid(drone.base_location)
+                && IsFlightHoursValid(drone.flightHours)
+                && IsBatteryHealthValid(drone.batteryHealth)
+                && IsMaxRangeKmValid(drone.maxRangeKm)
+                && IsMissionsCompletedValid(drone.missionsCompleted)
+                && IsStatusValid(drone.status)
+                && IsOperationalValid(drone.status, drone.batteryHealth);
         }
 
         private bool IsIdValid(int id)
@@ -13,7 +24,7 @@ namespace DroneFleetDataProcessing.Validators
             return id > 0;
         }
         
-        private bool IsSerialNumberValid(string serialNumber)
+        private bool IsSerialNumberValid(string? serialNumber)
         {
             const int validSerialNumberLength = 7;
 
@@ -34,21 +45,21 @@ namespace DroneFleetDataProcessing.Validators
             return true;
         }
 
-        private bool IsModelValid(string model)
+        private bool IsModelValid(string? model)
         {
             string[] ValidModels = { "Falcon-X", "Raven-M", "SkyEye-2", "CargoBee", "Storm-4", "Scout-Lite" };
 
              return string.IsNullOrWhiteSpace(model) && ValidModels.Contains(model);
         }
         
-        private bool IsCategoryValid(string category)
+        private bool IsCategoryValid(string? category)
         {
             string[] ValidCategory = { "Recon", "Patrol", "Mapping", "Delivery", "Search" };
 
              return string.IsNullOrWhiteSpace(category) && ValidCategory.Contains(category);
         }
         
-        private bool IsBaseLocationValid(string baseLocation)
+        private bool IsBaseLocationValid(string? baseLocation)
         {
             string[] ValidBaseLocation = { "North", "South", "Central", "East", "West" };
 
@@ -87,19 +98,25 @@ namespace DroneFleetDataProcessing.Validators
             return missionsCompleted <= MaxMissionsCompleted && missionsCompleted >= MinMissionsCompleted;
         }
 
-        private bool IsStatusValid(string status)
+        private bool IsStatusValid(string? status)
         {
             string[] ValidStatus = { "Operational", "Maintenance", "Grounded", "Training" };
 
             return string.IsNullOrWhiteSpace(status) && ValidStatus.Contains(status);
         }
 
-        private bool IsOperationalValid(string status, int batteryHealth)
+        private bool IsOperationalValid(string? status, int batteryHealth)
         {
+            const int MinOperationalBattery = 20;
+
             if (status == "Operational")
             {
-                if 
+                if (batteryHealth < MinOperationalBattery)
+                {
+                    return false;
+                }
             }
+            return true;
         }
 
     }
