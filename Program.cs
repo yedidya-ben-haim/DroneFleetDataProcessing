@@ -1,13 +1,14 @@
-using System;
-using System.IO;
-using System.Text.Json;
-using System.Collections.Generic;
+using DroneFleetDataProcessing.Exceptions;
 using DroneFleetDataProcessing.FileHandling;
 using DroneFleetDataProcessing.Models.Sensors;
-using DroneFleetDataProcessing.Exceptions;
-using DroneFleetDataProcessing.ReportLogger;
 using DroneFleetDataProcessing.Queries;
+using DroneFleetDataProcessing.ReportLogger;
 using DroneFleetDataProcessing.Validators;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace DroneFleetDataProcessing.Pipeline;
@@ -79,82 +80,63 @@ class Program
         }
     }
 
-    public static void AnalysisReport(List<Drone> drones)
+    public static void AnalysisReport(List<Drone> drones, ICommandLogger logger)
     {
+        
 
-        string reportFileOutput = Path.Combine("input", "output", "analysis_report.txt");
+        ValidationResult validResult = DroneCollectionValidator.ValidateAll(drones);
 
-        string? directory = Path.GetDirectoryName(reportFileOutput);
-        if (directory != null && !Directory.Exists(directory))
-        {
-            Directory.CreateDirectory(directory);
-        }
-
-        ICommandLogger logger = new FileLogger(reportFileOutput);
-        ValidationResult validResult = new ValidationResult(drones, 8);
+        logger.log($"Read {validResult.ValidDrones.Count} records from raw file");
+        
+        
+        
+        
         DroneAnalyzer analysReport = new DroneAnalyzer();
 
 
-        logger.log("DRONE FLEET ANALYSIS REPORT");
-        logger.log("");
-        logger.log("PROCESSING SUMMARY");
-        logger.log($"Total raw records: {drones.Count}");
-        logger.log($"Valid records: {validResult.ValidDrones.Count}");
-        logger.log($"Rejected records: {validResult.RejectedCount}");
-        logger.log("");
+        
+        //logger.log("PROCESSING SUMMARY");
+        //logger.log($"Total raw records: {drones.Count}");
+        //logger.log($"Valid records: {validResult.ValidDrones.Count}");
+        //logger.log($"Rejected records: {validResult.RejectedCount}");
+        //logger.log("");
 
-        logger.log("NON-OPERATIONAL DRONES");
-        ShowNonOpertionalDrones(logger, drones, analysReport);
-        logger.log("");
+        //logger.log("NON-OPERATIONAL DRONES");
+        //ShowNonOpertionalDrones(logger, drones, analysReport);
+        //logger.log("");
 
-        logger.log("TOP 5 DRONES BY FLIGHT HOURS");
-        ShowTopFiveDronesFlightByHours(logger, drones, analysReport);
-        logger.log("");
+        //logger.log("TOP 5 DRONES BY FLIGHT HOURS");
+        //ShowTopFiveDronesFlightByHours(logger, drones, analysReport);
+        //logger.log("");
 
-        logger.log("AVAILABLE DRONE MODELS");
-        ShowAvailableDroneModels(logger, drones, analysReport);
-        logger.log("");
+        //logger.log("AVAILABLE DRONE MODELS");
+        //ShowAvailableDroneModels(logger, drones, analysReport);
+        //logger.log("");
 
-        logger.log("DRONES BY BASE");
-        ShowDronesByBase(logger, drones, analysReport);
-        logger.log("");
+        //logger.log("DRONES BY BASE");
+        //ShowDronesByBase(logger, drones, analysReport);
+        //logger.log("");
 
-        logger.log("AVERAGE BATTERY HEALTH BY MODEL");
-        ShowAverageBatteryHealthByModel(logger, drones, analysReport);
-        logger.log("");
+        //logger.log("AVERAGE BATTERY HEALTH BY MODEL");
+        //ShowAverageBatteryHealthByModel(logger, drones, analysReport);
+        //logger.log("");
 
-        logger.log("MODEL WITH HIGHEST TOTAL COMPLETED MISSIONS");
-        ShowModelWithHighestCompletedMissions(logger, drones, analysReport);
+        //logger.log("MODEL WITH HIGHEST TOTAL COMPLETED MISSIONS");
+        //ShowModelWithHighestCompletedMissions(logger, drones, analysReport);
 
     }
 
     static void Main()
     {
-        string filePath = Path.Combine("input", "raw", "drones_raw.json");
+        
+        string rawFilePath = Path.Combine("input", "raw","drones_raw.json");
 
-        try
-        {
-            List<Drone> drones = LoadFromJson.loadFromJson(filePath);
+        ICommandLogger logger = new ConsoleLogger();
 
-            Console.WriteLine($"load succeeded {drones.Count} was loaded");
+        ProcessPipeline pipeline = new ProcessPipeline(logger);
 
-            //AnalysisReport(drones);
-        }
-        catch (FileNotFoundException ex)
-        {
-            Console.WriteLine($"Error file in path {filePath} was not found: {ex.Message}");
-        }
-        catch (FileIsEmptyOrWhiteSpace ex)
-        {
-            Console.WriteLine($"Error file is empty: {ex.Message}");
-        }
-        catch (JsonException ex)
-        {
-            Console.WriteLine($"Error file has some problems: {ex.Message}");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error occurred: {ex.Message}");
-        }
+        pipeline.Run(rawFilePath);
+
+
     }
 }
