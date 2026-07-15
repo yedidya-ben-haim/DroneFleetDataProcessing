@@ -4,7 +4,42 @@ namespace DroneFleetDataProcessing.validation
 {
     public class DroneValidator
     {
-        public bool Validate(Drone drone)
+        public ValidationResult ValidateAll(List<Drone> drones)
+        {
+
+            List<Drone> validDrones = new();
+            int rejectedCount = 0;
+            HashSet<int> seenIds = new();
+            HashSet<string> seenSerialNumbers = new();
+
+
+            foreach (Drone drone in drones)
+            {
+                bool fieldsAreValid = DroneValidator.Validate(drone);
+
+                bool idIsUnique = seenIds.Add(drone.id);
+
+                bool serialIsUnique = seenSerialNumbers.Add(drone.SerialNumber);
+
+                bool isValid =
+                    fieldsAreValid &&
+                    idIsUnique &&
+                    serialIsUnique;
+
+                if (isValid)
+                {
+                    validDrones.Add(drone);
+                }
+                else
+                {
+                    rejectedCount++;
+                }
+            }
+
+
+
+
+        public static bool Validate(Drone drone)
         {
             return IsIdValid(drone.id)
                 && IsSerialNumberValid(drone.serialNumber)
@@ -19,12 +54,12 @@ namespace DroneFleetDataProcessing.validation
                 && IsOperationalValid(drone.status, drone.batteryHealth);
         }
 
-        private bool IsIdValid(int id)
+        private static bool IsIdValid(int id)
         {
             return id > 0;
         }
         
-        private bool IsSerialNumberValid(string? serialNumber)
+        private static bool IsSerialNumberValid(string? serialNumber)
         {
             const int validSerialNumberLength = 7;
 
@@ -45,28 +80,28 @@ namespace DroneFleetDataProcessing.validation
             return true;
         }
 
-        private bool IsModelValid(string? model)
+        private static bool IsModelValid(string? model)
         {
-            string[] ValidModels = { "Falcon-X", "Raven-M", "SkyEye-2", "CargoBee", "Storm-4", "Scout-Lite" };
+            string[] validModels = { "Falcon-X", "Raven-M", "SkyEye-2", "CargoBee", "Storm-4", "Scout-Lite" };
 
-             return string.IsNullOrWhiteSpace(model) && ValidModels.Contains(model);
+             return !string.IsNullOrWhiteSpace(model) && ValidModels.Contains(model);
         }
         
-        private bool IsCategoryValid(string? category)
+        private static bool IsCategoryValid(string? category)
         {
-            string[] ValidCategory = { "Recon", "Patrol", "Mapping", "Delivery", "Search" };
+            string[] validCategories = { "Recon", "Patrol", "Mapping", "Delivery", "Search" };
 
-             return string.IsNullOrWhiteSpace(category) && ValidCategory.Contains(category);
+             return !string.IsNullOrWhiteSpace(category) && ValidCategory.Contains(category);
         }
         
-        private bool IsBaseLocationValid(string? baseLocation)
+        private static bool IsBaseLocationValid(string? baseLocation)
         {
-            string[] ValidBaseLocation = { "North", "South", "Central", "East", "West" };
+            string[] validBaseLocations = { "North", "South", "Central", "East", "West" };
 
-             return string.IsNullOrWhiteSpace(baseLocation) && ValidBaseLocation.Contains(baseLocation);
+             return !string.IsNullOrWhiteSpace(baseLocation) && ValidBaseLocation.Contains(baseLocation);
         }
 
-        private bool IsFlightHoursValid(double flightHours)
+        private static bool IsFlightHoursValid(double flightHours)
         {
             const int MaxFlightHours = 2500;
             const int MinFlightHours = 0;
@@ -74,7 +109,7 @@ namespace DroneFleetDataProcessing.validation
             return flightHours <= MaxFlightHours && flightHours >= MinFlightHours; 
         }
 
-        private bool IsBatteryHealthValid(int batteryHealth)
+        private static bool IsBatteryHealthValid(int batteryHealth)
         {
             const int MaxBatteryHealth = 100;
             const int MinBatteryHealth = 0;
@@ -82,7 +117,7 @@ namespace DroneFleetDataProcessing.validation
             return batteryHealth <= MaxBatteryHealth && batteryHealth >= MinBatteryHealth;
         }
 
-        private bool IsMaxRangeKmValid(double rangeKm)
+        private static bool IsMaxRangeKmValid(double rangeKm)
         {
             const int MaxRangeKm = 150;
             const int MinRangeKm = 1;
@@ -90,7 +125,7 @@ namespace DroneFleetDataProcessing.validation
             return rangeKm <= MaxRangeKm && rangeKm >= MinRangeKm;
         }
 
-        private bool IsMissionsCompletedValid(int missionsCompleted)
+        private static bool IsMissionsCompletedValid(int missionsCompleted)
         {
             const int MaxMissionsCompleted = 5000;
             const int MinMissionsCompleted = 0;
@@ -98,14 +133,14 @@ namespace DroneFleetDataProcessing.validation
             return missionsCompleted <= MaxMissionsCompleted && missionsCompleted >= MinMissionsCompleted;
         }
 
-        private bool IsStatusValid(string? status)
+        private static bool IsStatusValid(string? status)
         {
-            string[] ValidStatus = { "Operational", "Maintenance", "Grounded", "Training" };
+            string[] validStatuses = { "Operational", "Maintenance", "Grounded", "Training" };
 
-            return string.IsNullOrWhiteSpace(status) && ValidStatus.Contains(status);
+            return !string.IsNullOrWhiteSpace(status) && ValidStatus.Contains(status);
         }
 
-        private bool IsOperationalValid(string? status, int batteryHealth)
+        private static bool IsOperationalValid(string? status, int batteryHealth)
         {
             const int MinOperationalBattery = 20;
 
