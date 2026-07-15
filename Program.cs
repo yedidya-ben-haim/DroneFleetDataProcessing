@@ -138,7 +138,6 @@ class Program
 
             Console.WriteLine($"load succeeded {drones.Count} was loaded");
 
-            //AnalysisReport(drones);
         }
         catch (FileNotFoundException ex)
         {
