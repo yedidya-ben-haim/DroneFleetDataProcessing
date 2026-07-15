@@ -128,40 +128,15 @@ class Program
 
     static void Main()
     {
-        string filePath = Path.Combine("input", "raw", "drones_raw.json");
-        string reportFileOutput = Path.Combine("output", "analysis_report.txt");
-        ICommandLogger logger = new FileLogger(reportFileOutput);
+        
+        string rawFilePath = Path.Combine("input", "raw","drones_raw.json");
 
-        logger.log("=== Drone Fleet Data Processing System ===");
-        logger.log("");
-        try
-        {
-            ProcessPipeline pipeline = new ProcessPipeline();
-            pipeline.Run();
-            logger.log("Step 1: Reading raw data");
-            List<Drone> drones = LoadFromJson.LoadJson(filePath);
+        ICommandLogger logger = new ConsoleLogger();
 
-            AnalysisReport(drones, logger);
+        ProcessPipeline pipeline = new ProcessPipeline(logger);
 
-        }
-        catch (FileNotFoundException ex)
-        {
-            Console.WriteLine($"Error file in path {filePath} was not found: {ex.Message}");
-        }
-        catch (FileIsEmptyOrWhiteSpace ex)
-        {
-            Console.WriteLine($"Error file is empty: {ex.Message}");
-        }
-        catch (JsonException ex)
-        {
-            Console.WriteLine($"Error file has some problems: {ex.Message}");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error occurred: {ex.Message}");
-        }
+        pipeline.Run(rawFilePath);
 
-       
 
     }
 }

@@ -13,17 +13,28 @@ public class LoadFromJson
     {
         if (!File.Exists(path))
         {
-            throw new FileNotFoundException($"Erorr: the file in {path} was not found");
+            throw new FileNotFoundException($"The file was not found: {path}");
         }
 
         string fileContent = File.ReadAllText(path);
 
         if (string.IsNullOrWhiteSpace(fileContent))
         {
-            throw new FileIsEmptyOrWhiteSpace("Error: JSON file is empty or contains only whitespace.");
+            throw new FileIsEmptyOrWhiteSpace("The JSON file is empty or contains only whitespace");
         }
 
-        return JsonSerializer.Deserialize<List<Drone>>(fileContent) ?? new List<Drone>();
+        List<Drone>? drones = JsonSerializer.Deserialize<List<Drone>>(fileContent);
+
+        if (drones is null)
+        {
+            throw new InvalidDataException("Deserialization returned null");
+        }
+
+        if (drones.Count == 0)
+        {
+            throw new InvalidDataException("The JSON file contains an empty array");
+        }
+        return drones;
     }
 
     public static void SaveToJson(string path, List<Drone> drones) 
