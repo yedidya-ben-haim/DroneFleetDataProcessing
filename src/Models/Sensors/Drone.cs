@@ -1,19 +1,15 @@
+namespace DroneFleetDataProcessing.Models.Sensors;
 
-using System;
-namespace DroneFleetDataProcessing.Models.Sensors
+public class Drone
 {
-
-    public class RawDrone
-    {
-        public int Id { get; set; }
-        public string? SerialNumber { get; set; }
-        public string? Model { get; set; }
-        public string? Category { get; set; }
-        public string? BaseLocation { get; set; }
-        public double FlightHours { get; set; }
-        public int BatteryHealth { get; set; }
-        public double MaxRangeKm { get; set; }
-        public int MissionsCompleted { get; set; }
-        public string? Status { get; set; }
-    }
+    public int id { get; set; }
+    public string? serialNumber { get; set; }
+    public string? model { get; set; }
+    public string? category { get; set; }
+    public string? base_location { get; set; }
+    public double flightHours { get; set; }
+    public int batteryHealth { get; set; }
+    public double maxRangeKm { get; set; }
+    public int missionsCompleted { get; set; }
+    public string? status { get; set; }
 }
