@@ -9,7 +9,7 @@ namespace DroneFleetDataProcessing.FileHandling;
 
 public class LoadFromJson
 {
-    public static List<Drone> loadFromJson(string path)
+    public static List<Drone> LoadJson(string path)
     {
         if (!File.Exists(path))
         {
@@ -26,7 +26,7 @@ public class LoadFromJson
         return JsonSerializer.Deserialize<List<Drone>>(fileContent) ?? new List<Drone>();
     }
 
-    public static void saveToJson(string path, List<Drone> drones) 
+    public static void SaveToJson(string path, List<Drone> drones) 
     {
         if(drones == null)
         {
