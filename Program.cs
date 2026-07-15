@@ -82,7 +82,8 @@ class Program
 
     public static void AnalysisReport(List<Drone> drones, ICommandLogger logger)
     {
-        Console.WriteLine("hi");
+        
+
         ValidationResult validResult = DroneCollectionValidator.ValidateAll(drones);
 
         logger.log($"Read {validResult.ValidDrones.Count} records from raw file");
@@ -135,6 +136,8 @@ class Program
         logger.log("");
         try
         {
+            ProcessPipeline pipeline = new ProcessPipeline();
+            pipeline.Run();
             logger.log("Step 1: Reading raw data");
             List<Drone> drones = LoadFromJson.LoadJson(filePath);
 
