@@ -100,7 +100,9 @@ public class ProcessPipeline
         }
 
         _consoleLogger.log("Step 2: Validating data and creating clean dataset...");
+        
         ValidationResult validResult = DroneCollectionValidator.ValidateAll(rawDrones);
+        
         _consoleLogger.log($"Valid records: {validResult.ValidDrones.Count}");
         _consoleLogger.log($"Rejected records: {validResult.RejectedCount}");
 
@@ -137,7 +139,9 @@ public class ProcessPipeline
         }
 
         _consoleLogger.log("Step 5: Performing analysis...");
+        
         DroneAnalyzer analyzer = new DroneAnalyzer();
+        
         _consoleLogger.log("Analysis completed successfully");
 
         _consoleLogger.log("Step 6: Generating report...");

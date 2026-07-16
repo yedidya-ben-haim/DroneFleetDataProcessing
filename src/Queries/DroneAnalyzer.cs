@@ -16,10 +16,10 @@ namespace DroneFleetDataProcessing.Queries;
             if (drones == null) return [];
             return drones.OrderByDescending(r => r.flightHours).Take(5).ToList();
         }
-        public List<string?> GetAvailableDroneModels(List<Drone> drones)
+        public List<string> GetAvailableDroneModels(List<Drone> drones)
         {
             if (drones == null) return [];
-            return drones.Select(r=>r.model).Where(m => m != null).Distinct().ToList();
+            return drones.Where(m => m != null).Select(r=>r.model!).Distinct().ToList();
         }
         public Dictionary<string,int> GetDroneCountInEachBase(List<Drone> drones) 
         {

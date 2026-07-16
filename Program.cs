@@ -82,19 +82,12 @@ class Program
 
     public static void AnalysisReport(List<Drone> drones, ICommandLogger logger)
     {
-        
-
         ValidationResult validResult = DroneCollectionValidator.ValidateAll(drones);
 
         logger.log($"Read {validResult.ValidDrones.Count} records from raw file");
         
-        
-        
-        
         DroneAnalyzer analysReport = new DroneAnalyzer();
 
-
-        
         //logger.log("PROCESSING SUMMARY");
         //logger.log($"Total raw records: {drones.Count}");
         //logger.log($"Valid records: {validResult.ValidDrones.Count}");
