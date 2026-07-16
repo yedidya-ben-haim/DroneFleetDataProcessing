@@ -25,6 +25,7 @@ public class ProcessPipeline
             List<Drone> drones = LoadFromJson.LoadJson(rawFilePath);
 
             _logger.log($"Read {drones.Count} records from raw file");
+
         }
         catch (FileNotFoundException ex)
         {
