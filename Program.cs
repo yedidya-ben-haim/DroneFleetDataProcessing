@@ -29,13 +29,20 @@ class Program
 
         string reportFilePath = Path.Combine(rootDirectory, "output", "analysis_report.txt");
 
-        ICommandLogger logger = new ConsoleLogger();
+        ICommandLogger consoleLogger = new ConsoleLogger();
+        //IDroneDataLoader dataLoader = new LoadFromJson(rawFilePath);
 
-        ProcessPipeline pipeline = new ProcessPipeline(logger);
+        IDroneDataLoader dataLoader = new LoadFromJson(allInvalidPath);
+        //IDroneDataLoader dataLoader = new LoadFromJson(nonExistsPath);
+        //IDroneDataLoader dataLoader = new LoadFromJson(dronesEmptyPath);
+        //IDroneDataLoader dataLoader = new LoadFromJson(malformedPath);
+        //IDroneDataLoader dataLoader = new LoadFromJson(nullPath);
 
-        pipeline.Run(rawFilePath, pathOfCleanJson,reportFilePath);
+        ProcessPipeline pipeline = new ProcessPipeline(consoleLogger, dataLoader);
 
-        //pipeline.Run(allInvalidPath, pathOfCleanJson, reportFilePath);
+        //pipeline.Run(rawFilePath, pathOfCleanJson,reportFilePath);
+
+        pipeline.Run(allInvalidPath, pathOfCleanJson, reportFilePath);
         //pipeline.Run(dronesEmptyPath, pathOfCleanJson, reportFilePath);
         //pipeline.Run(malformedPath, pathOfCleanJson, reportFilePath);
         //pipeline.Run(nullPath, pathOfCleanJson, reportFilePath);
