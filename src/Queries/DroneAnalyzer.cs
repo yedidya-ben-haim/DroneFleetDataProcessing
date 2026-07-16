@@ -36,13 +36,13 @@ namespace DroneFleetDataProcessing.Queries;
             if (drones == null || drones.Count == 0) return null;
             return drones.Where(r => r.model != null).GroupBy(r => r.model).OrderByDescending(group => group.Sum(r => r.missionsCompleted)).Select(g => g.Key).FirstOrDefault();
         }
-        public List<string> GetTopThreeModelsByAverageFlightHours(List<Drone> drones)
-        {
-            if (drones == null) return [];
+        //public List<string> GetTopThreeModelsByAverageFlightHours(List<Drone> drones)
+        //{
+        //    if (drones == null) return [];
 
-            return drones.Where(r => r.model != null).GroupBy(r => r.model).Select(
-                g => new{Model = g.Key!, AverageHours = g.Average(r => r.flightHours)})
-                .OrderByDescending(x => x.AverageHours).Take(3).Select(x => x.Model).ToList();
-        }
+        //    return drones.Where(r => r.model != null).GroupBy(r => r.model).Select(
+        //        g => new{Model = g.Key!, AverageHours = g.Average(r => r.flightHours)})
+        //        .OrderByDescending(x => x.AverageHours).Take(3).Select(x => x.Model).ToList();
+        //}
 }
 

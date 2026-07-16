@@ -7,16 +7,21 @@ using DroneFleetDataProcessing.Exceptions;
 
 namespace DroneFleetDataProcessing.FileHandling;
 
-public class LoadFromJson
+public class LoadFromJson : IDroneDataLoader
 {
-    public static List<Drone> LoadJson(string path)
+    private readonly string Path;
+    public LoadFromJson(string path)
     {
-        if (!File.Exists(path))
+        Path = path;
+    }
+    public List<Drone> LoadData()
+    {
+        if (!File.Exists(Path))
         {
-            throw new FileNotFoundException($"The file was not found: {path}");
+            throw new FileNotFoundException($"The file was not found: {Path}");
         }
 
-        string fileContent = File.ReadAllText(path);
+        string fileContent = File.ReadAllText(Path);
 
         if (string.IsNullOrWhiteSpace(fileContent))
         {

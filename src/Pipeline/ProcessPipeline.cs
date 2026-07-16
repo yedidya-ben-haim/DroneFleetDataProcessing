@@ -14,21 +14,23 @@ namespace DroneFleetDataProcessing.Pipeline;
 public class ProcessPipeline
 {
     private readonly ICommandLogger _consoleLogger;
+    private readonly IDroneDataLoader _dataLoader;
 
-    public ProcessPipeline(ICommandLogger consoleLogger)
+    public ProcessPipeline(ICommandLogger consoleLogger, IDroneDataLoader dataLoader)
     {
         _consoleLogger = consoleLogger;
+        _dataLoader = dataLoader;
     }
 
     public void Run(string rawFilePath, string pathOfCleanJson, string reportFilePath)
     {
         _consoleLogger.log("=== Drone Fleet Data Processing System ===");
-
+        _consoleLogger.log("");
         _consoleLogger.log("Step 1: Reading raw data...");
         List<Drone> rawDrones;
         try
         {
-            rawDrones = LoadFromJson.LoadJson(rawFilePath);
+            rawDrones = _dataLoader.LoadData();
             _consoleLogger.log($"Read {rawDrones.Count} records from raw file");
         }
         catch (FileNotFoundException ex)
@@ -56,7 +58,13 @@ public class ProcessPipeline
             _consoleLogger.log($"Error: InvalidDataException Invalid data structures encountered: {ex.Message}");
             return;
         }
+        catch (IOException ex)
+        {
+            _consoleLogger.log($"Error: IOException Failed to write clean JSON file (Disk full or file locked): {ex.Message}");
+            return;
+        }
 
+        _consoleLogger.log("");
         _consoleLogger.log("Step 2: Validating data and creating clean dataset...");
         
         ValidationResult validResult = DroneCollectionValidator.ValidateAll(rawDrones);
@@ -70,6 +78,7 @@ public class ProcessPipeline
             return;
         }
 
+        _consoleLogger.log("");
         _consoleLogger.log("Step 3: Saving clean data...");
         try
         {
@@ -88,11 +97,13 @@ public class ProcessPipeline
             return;
         }
 
+        _consoleLogger.log("");
         _consoleLogger.log("Step 4: Reloading clean data...");
         List<Drone> cleanDrones;
         try
         {
-            cleanDrones = LoadFromJson.LoadJson(pathOfCleanJson);
+            IDroneDataLoader cleanDataLoader = new LoadFromJson(pathOfCleanJson);
+            cleanDrones = cleanDataLoader.LoadData();
             _consoleLogger.log($"Loaded {cleanDrones.Count} records from clean dataset");
         }
         catch (FileNotFoundException ex)
@@ -120,13 +131,20 @@ public class ProcessPipeline
             _consoleLogger.log($"Error: InvalidDataException Invalid data structures encountered: {ex.Message}");
             return;
         }
+        catch (IOException ex)
+        {
+            _consoleLogger.log($"Error: IOException Failed to write clean JSON file (Disk full or file locked): {ex.Message}");
+            return;
+        }
 
+        _consoleLogger.log("");
         _consoleLogger.log("Step 5: Performing analysis...");
         
         DroneAnalyzer analyzer = new DroneAnalyzer();
         
         _consoleLogger.log("Analysis completed successfully");
 
+        _consoleLogger.log("");
         _consoleLogger.log("Step 6: Generating report...");
         try
         {
@@ -184,5 +202,6 @@ public class ProcessPipeline
 
         fileLogger.log("MODEL WITH HIGHEST TOTAL COMPLETED MISSIONS");
         ReportGenerator.ShowModelWithHighestCompletedMissions(fileLogger, cleanDrones, analyzer);
+
     }
 }
