@@ -128,14 +128,18 @@ class Program
 
     static void Main()
     {
-        
-        string rawFilePath = Path.Combine("input", "raw","drones_raw.json");
+
+        string rootDirectory = Directory.GetCurrentDirectory();
+
+        string pathOfCleanJson = Path.Combine(rootDirectory, "output","drones_clean.json");
+        string rawFilePath = Path.Combine(rootDirectory, "input", "raw","drones_raw.json");
+        string reportFilePath = Path.Combine(rootDirectory, "output", "analysis_report.txt");
 
         ICommandLogger logger = new ConsoleLogger();
 
         ProcessPipeline pipeline = new ProcessPipeline(logger);
 
-        pipeline.Run(rawFilePath);
+        pipeline.Run(rawFilePath, pathOfCleanJson,reportFilePath);
 
 
     }
