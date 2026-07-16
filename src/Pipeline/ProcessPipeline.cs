@@ -1,54 +1,188 @@
+using System;
+using System.IO;
 using System.Text.Json;
+using System.Collections.Generic;
 using DroneFleetDataProcessing.Exceptions;
 using DroneFleetDataProcessing.FileHandling;
 using DroneFleetDataProcessing.Models.Sensors;
 using DroneFleetDataProcessing.ReportLogger;
+using DroneFleetDataProcessing.Validators;
+using DroneFleetDataProcessing.Queries;
 
 namespace DroneFleetDataProcessing.Pipeline;
 
 public class ProcessPipeline
 {
-    private readonly ICommandLogger _logger;
+    private readonly ICommandLogger _consoleLogger;
 
-    public ProcessPipeline(ICommandLogger logger)
+    public ProcessPipeline(ICommandLogger consoleLogger)
     {
-        _logger = logger;
+        _consoleLogger = consoleLogger;
     }
 
-    public void Run(string rawFilePath)
+    public void Run(string rawFilePath, string pathOfCleanJson, string reportFilePath)
     {
-        _logger.log("=== Drone Fleet Data Processing System ===");
-        _logger.log("Step 1: Reading raw data...");
+        _consoleLogger.log("=== Drone Fleet Data Processing System ===");
 
+        _consoleLogger.log("Step 1: Reading raw data...");
+        List<Drone> rawDrones;
         try
         {
-            List<Drone> drones = LoadFromJson.LoadJson(rawFilePath);
-
-            _logger.log($"Read {drones.Count} records from raw file");
+            rawDrones = LoadFromJson.LoadJson(rawFilePath);
+            _consoleLogger.log($"Read {rawDrones.Count} records from raw file");
         }
         catch (FileNotFoundException ex)
         {
-            _logger.log($"Error: File not found - {ex.Message}");
+            _consoleLogger.log($"Error: FileNotFoundException The file was not found: {ex.Message}");
+            return;
         }
         catch (UnauthorizedAccessException ex)
         {
-            _logger.log($"Error: Read permission denied - {ex.Message}");
+            _consoleLogger.log($"Error: UnauthorizedAccessException Read permission denied: {ex.Message}");
+            return;
         }
         catch (FileIsEmptyOrWhiteSpace ex)
         {
-            _logger.log($"Error: Empty file - {ex.Message}");
+            _consoleLogger.log($"Error: FileIsEmptyOrWhiteSpace The JSON file is empty or contains only whitespace: {ex.Message}");
+            return;
         }
-        catch (JsonException ex)
+        catch (JsonException)
         {
-            _logger.log($"Error: Invalid JSON - {ex.Message}");
+            _consoleLogger.log("Error: JsonException The JSON file is malformed or has an invalid structure");
+            return;
         }
         catch (InvalidDataException ex)
         {
-            _logger.log($"Error: Invalid data - {ex.Message}");
+            _consoleLogger.log($"Error: InvalidDataException Invalid data structures encountered: {ex.Message}");
+            return;
         }
-        catch (IOException ex)
+
+        _consoleLogger.log("Step 2: Validating data and creating clean dataset...");
+        
+        ValidationResult validResult = DroneCollectionValidator.ValidateAll(rawDrones);
+        
+        _consoleLogger.log($"Valid records: {validResult.ValidDrones.Count}");
+        _consoleLogger.log($"Rejected records: {validResult.RejectedCount}");
+
+        if (validResult.ValidDrones.Count == 0)
         {
-            _logger.log($"Error: File reading failed - {ex.Message}");
+            _consoleLogger.log("Error: No valid records found for analysis!");
+            return;
         }
+
+        _consoleLogger.log("Step 3: Saving clean data...");
+        try
+        {
+            LoadFromJson.SaveToJson(pathOfCleanJson, validResult.ValidDrones);
+            string fullCleanPath = Path.GetFullPath(pathOfCleanJson);
+            _consoleLogger.log($"Clean data saved to: {fullCleanPath}");
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            _consoleLogger.log($"Error: UnauthorizedAccessException Write permission denied to path: {ex.Message}");
+            return;
+        }
+        catch (DirectoryNotFoundException ex)
+        {
+            _consoleLogger.log($"Error: DirectoryNotFoundException The output directory does not exist: {ex.Message}");
+            return;
+        }
+
+        _consoleLogger.log("Step 4: Reloading clean data...");
+        List<Drone> cleanDrones;
+        try
+        {
+            cleanDrones = LoadFromJson.LoadJson(pathOfCleanJson);
+            _consoleLogger.log($"Loaded {cleanDrones.Count} records from clean dataset");
+        }
+        catch (FileNotFoundException ex)
+        {
+            _consoleLogger.log($"Error: FileNotFoundException The file was not found: {ex.Message}");
+            return;
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            _consoleLogger.log($"Error: UnauthorizedAccessException Read permission denied: {ex.Message}");
+            return;
+        }
+        catch (FileIsEmptyOrWhiteSpace ex)
+        {
+            _consoleLogger.log($"Error: FileIsEmptyOrWhiteSpace The JSON file is empty or contains only whitespace: {ex.Message}");
+            return;
+        }
+        catch (JsonException)
+        {
+            _consoleLogger.log("Error: JsonException The JSON file is malformed or has an invalid structure");
+            return;
+        }
+        catch (InvalidDataException ex)
+        {
+            _consoleLogger.log($"Error: InvalidDataException Invalid data structures encountered: {ex.Message}");
+            return;
+        }
+
+        _consoleLogger.log("Step 5: Performing analysis...");
+        
+        DroneAnalyzer analyzer = new DroneAnalyzer();
+        
+        _consoleLogger.log("Analysis completed successfully");
+
+        _consoleLogger.log("Step 6: Generating report...");
+        try
+        {
+            string? outputDir = Path.GetDirectoryName(reportFilePath);
+            if (outputDir != null && !Directory.Exists(outputDir))
+            {
+                Directory.CreateDirectory(outputDir);
+            }
+
+            ICommandLogger fileLogger = new FileLogger(reportFilePath);
+
+            GenerateFileReport(fileLogger, rawDrones.Count, validResult, cleanDrones, analyzer);
+
+            string fullReportPath = Path.GetFullPath(reportFilePath);
+            _consoleLogger.log($"Report generated successfully: {fullReportPath}");
+        }
+        catch (Exception ex)
+        {
+            _consoleLogger.log($"Error: Report generation failed  {ex.Message}");
+            return;
+        }
+
+        _consoleLogger.log("=== Process completed successfully! ===");
+    }
+
+    private void GenerateFileReport(ICommandLogger fileLogger, int totalRawCount, ValidationResult validResult, List<Drone> cleanDrones, DroneAnalyzer analyzer)
+    {
+        fileLogger.log("DRONE FLEET ANALYSIS REPORT");
+        fileLogger.log("");
+        fileLogger.log("PROCESSING SUMMARY");
+        fileLogger.log($"Total raw records: {totalRawCount}");
+        fileLogger.log($"Valid records: {validResult.ValidDrones.Count}");
+        fileLogger.log($"Rejected records: {validResult.RejectedCount}");
+        fileLogger.log("");
+
+        fileLogger.log("NON-OPERATIONAL DRONES");
+        ReportGenerator.ShowNonOpertionalDrones(fileLogger, cleanDrones, analyzer);
+        fileLogger.log("");
+
+        fileLogger.log("TOP 5 DRONES BY FLIGHT HOURS");
+        ReportGenerator.ShowTopFiveDronesFlightByHours(fileLogger, cleanDrones, analyzer);
+        fileLogger.log("");
+
+        fileLogger.log("AVAILABLE DRONE MODELS");
+        ReportGenerator.ShowAvailableDroneModels(fileLogger, cleanDrones, analyzer);
+        fileLogger.log("");
+
+        fileLogger.log("DRONES BY BASE");
+        ReportGenerator.ShowDronesByBase(fileLogger, cleanDrones, analyzer);
+        fileLogger.log("");
+
+        fileLogger.log("AVERAGE BATTERY HEALTH BY MODEL");
+        ReportGenerator.ShowAverageBatteryHealthByModel(fileLogger, cleanDrones, analyzer);
+        fileLogger.log("");
+
+        fileLogger.log("MODEL WITH HIGHEST TOTAL COMPLETED MISSIONS");
+        ReportGenerator.ShowModelWithHighestCompletedMissions(fileLogger, cleanDrones, analyzer);
     }
 }

@@ -8,6 +8,7 @@ public class FileLogger : ICommandLogger
     public FileLogger(string path)
     {
         filePath = path;
+        File.WriteAllText(filePath, string.Empty);
     }
 
     public void log(string str)
