@@ -1,65 +1,3 @@
-//using System.Text.Json;
-//using DroneFleetDataProcessing.Exceptions;
-//using DroneFleetDataProcessing.FileHandling;
-//using DroneFleetDataProcessing.Models.Sensors;
-//using DroneFleetDataProcessing.ReportLogger;
-//using DroneFleetDataProcessing.Validators;
-
-//namespace DroneFleetDataProcessing.Pipeline;
-
-//public class ProcessPipeline
-//{
-//    private readonly ICommandLogger _logger;
-
-//    public ProcessPipeline(ICommandLogger logger)
-//    {
-//        _logger = logger;
-//    }
-
-//    public void Run(string rawFilePath,string pathOfCleanJson,string reportFilePath)
-//    {
-
-//        _logger.log("=== Drone Fleet Data Processing System ===");
-//        _logger.log("Step 1: Reading raw data...");
-
-//        try
-//        {
-//            List<Drone> drones = LoadFromJson.LoadJson(rawFilePath);
-
-//            _logger.log($"Read {drones.Count} records from raw file");
-//            ValidationResult validReports = DroneCollectionValidator.ValidateAll(drones);
-//            LoadFromJson.SaveToJson(pathOfCleanJson,validReports.ValidDrones);
-//        }
-//        catch (FileNotFoundException ex)
-//        {
-//            _logger.log($"Error: File not found - {ex.Message}");
-//        }
-//        catch (UnauthorizedAccessException ex)
-//        {
-//            _logger.log($"Error: Read permission denied - {ex.Message}");
-//        }
-//        catch (FileIsEmptyOrWhiteSpace ex)
-//        {
-//            _logger.log($"Error: Empty file - {ex.Message}");
-//        }
-//        catch (JsonException ex)
-//        {
-//            _logger.log($"Error: Invalid JSON - {ex.Message}");
-//        }
-//        catch (InvalidDataException ex)
-//        {
-//            _logger.log($"Error: Invalid data - {ex.Message}");
-//        }
-//        catch (IOException ex)
-//        {
-//            _logger.log($"Error: File reading failed - {ex.Message}");
-//        }
-//    }
-//}
-
-
-
-
 using System;
 using System.IO;
 using System.Text.Json;
@@ -93,9 +31,29 @@ public class ProcessPipeline
             rawDrones = LoadFromJson.LoadJson(rawFilePath);
             _consoleLogger.log($"Read {rawDrones.Count} records from raw file");
         }
-        catch (Exception ex)
+        catch (FileNotFoundException ex)
         {
-            _consoleLogger.log($"Error: {ex.GetType().Name} {ex.Message}");
+            _consoleLogger.log($"Error: FileNotFoundException The file was not found: {ex.Message}");
+            return;
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            _consoleLogger.log($"Error: UnauthorizedAccessException Read permission denied: {ex.Message}");
+            return;
+        }
+        catch (FileIsEmptyOrWhiteSpace ex)
+        {
+            _consoleLogger.log($"Error: FileIsEmptyOrWhiteSpace The JSON file is empty or contains only whitespace: {ex.Message}");
+            return;
+        }
+        catch (JsonException)
+        {
+            _consoleLogger.log("Error: JsonException The JSON file is malformed or has an invalid structure");
+            return;
+        }
+        catch (InvalidDataException ex)
+        {
+            _consoleLogger.log($"Error: InvalidDataException Invalid data structures encountered: {ex.Message}");
             return;
         }
 
@@ -117,11 +75,16 @@ public class ProcessPipeline
         {
             LoadFromJson.SaveToJson(pathOfCleanJson, validResult.ValidDrones);
             string fullCleanPath = Path.GetFullPath(pathOfCleanJson);
-            _consoleLogger.log($"Clean data saved to: <{fullCleanPath}>");
+            _consoleLogger.log($"Clean data saved to: {fullCleanPath}");
         }
-        catch (Exception ex)
+        catch (UnauthorizedAccessException ex)
         {
-            _consoleLogger.log($"Error: Failed to write output clean JSON file - {ex.Message}");
+            _consoleLogger.log($"Error: UnauthorizedAccessException Write permission denied to path: {ex.Message}");
+            return;
+        }
+        catch (DirectoryNotFoundException ex)
+        {
+            _consoleLogger.log($"Error: DirectoryNotFoundException The output directory does not exist: {ex.Message}");
             return;
         }
 
@@ -132,9 +95,29 @@ public class ProcessPipeline
             cleanDrones = LoadFromJson.LoadJson(pathOfCleanJson);
             _consoleLogger.log($"Loaded {cleanDrones.Count} records from clean dataset");
         }
-        catch (Exception ex)
+        catch (FileNotFoundException ex)
         {
-            _consoleLogger.log($"Error: Reload failed - {ex.Message}");
+            _consoleLogger.log($"Error: FileNotFoundException The file was not found: {ex.Message}");
+            return;
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            _consoleLogger.log($"Error: UnauthorizedAccessException Read permission denied: {ex.Message}");
+            return;
+        }
+        catch (FileIsEmptyOrWhiteSpace ex)
+        {
+            _consoleLogger.log($"Error: FileIsEmptyOrWhiteSpace The JSON file is empty or contains only whitespace: {ex.Message}");
+            return;
+        }
+        catch (JsonException)
+        {
+            _consoleLogger.log("Error: JsonException The JSON file is malformed or has an invalid structure");
+            return;
+        }
+        catch (InvalidDataException ex)
+        {
+            _consoleLogger.log($"Error: InvalidDataException Invalid data structures encountered: {ex.Message}");
             return;
         }
 
@@ -180,26 +163,26 @@ public class ProcessPipeline
         fileLogger.log("");
 
         fileLogger.log("NON-OPERATIONAL DRONES");
-        Program.ShowNonOpertionalDrones(fileLogger, cleanDrones, analyzer);
+        ReportGenerator.ShowNonOpertionalDrones(fileLogger, cleanDrones, analyzer);
         fileLogger.log("");
 
         fileLogger.log("TOP 5 DRONES BY FLIGHT HOURS");
-        Program.ShowTopFiveDronesFlightByHours(fileLogger, cleanDrones, analyzer);
+        ReportGenerator.ShowTopFiveDronesFlightByHours(fileLogger, cleanDrones, analyzer);
         fileLogger.log("");
 
         fileLogger.log("AVAILABLE DRONE MODELS");
-        Program.ShowAvailableDroneModels(fileLogger, cleanDrones, analyzer);
+        ReportGenerator.ShowAvailableDroneModels(fileLogger, cleanDrones, analyzer);
         fileLogger.log("");
 
         fileLogger.log("DRONES BY BASE");
-        Program.ShowDronesByBase(fileLogger, cleanDrones, analyzer);
+        ReportGenerator.ShowDronesByBase(fileLogger, cleanDrones, analyzer);
         fileLogger.log("");
 
         fileLogger.log("AVERAGE BATTERY HEALTH BY MODEL");
-        Program.ShowAverageBatteryHealthByModel(fileLogger, cleanDrones, analyzer);
+        ReportGenerator.ShowAverageBatteryHealthByModel(fileLogger, cleanDrones, analyzer);
         fileLogger.log("");
 
         fileLogger.log("MODEL WITH HIGHEST TOTAL COMPLETED MISSIONS");
-        Program.ShowModelWithHighestCompletedMissions(fileLogger, cleanDrones, analyzer);
+        ReportGenerator.ShowModelWithHighestCompletedMissions(fileLogger, cleanDrones, analyzer);
     }
 }
