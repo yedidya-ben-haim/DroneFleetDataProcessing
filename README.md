@@ -90,7 +90,7 @@ DroneFleetDataProcessing/
 ## Clasess
 
 | Class | Responsibility |
-| :--- | :--- |
+| :--- | ----- |
 | `Drone` | Represents a single drone and holds its sensor data. |
 | `JsonHandle` | Manages loading raw data from JSON and saving clean data to JSON |
 | `ProcessPipeline` | Orchestrates the entire workflow steps (Load -> Validate -> Save -> Analyze -> Report) |

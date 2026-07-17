@@ -97,4 +97,15 @@ public static class ReportGenerator
             logger.log($"Total completed missions: {totalMissions}");
         }
     }
+
+    public static void ShowTopThreeModelsByAverageFlightHours(ICommandLogger logger, List<Drone> drones, DroneAnalyzer analyzer)
+    {
+        List<string> topThreeModel = analyzer.GetTopThreeModelsByAverageFlightHours(drones);
+        
+        foreach (string model in topThreeModel)
+        {
+            logger.log(model);
+        }
+    }
+
 }
