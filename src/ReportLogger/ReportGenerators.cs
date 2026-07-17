@@ -11,6 +11,11 @@ public static class ReportGenerator
     public static void ShowNonOpertionalDrones(ICommandLogger logger, List<Drone> drones, DroneAnalyzer analysReport)
     {
         List<Drone> result = analysReport.GetNonOpertionalDrone(drones);
+        if (result.Count == 0)
+        {
+            logger.log("No results found.");
+            return;
+        }
         foreach (var drone in result)
         {
             logger.log($"{drone.serialNumber} | {drone.model} | {drone.base_location} | {drone.status}");
@@ -19,6 +24,12 @@ public static class ReportGenerator
     public static void ShowTopFiveDronesFlightByHours(ICommandLogger logger, List<Drone> drones, DroneAnalyzer analyzer)
     {
         List<Drone> result = analyzer.GetTopFiveFlightHouers(drones);
+        if (result.Count == 0)
+        {
+            logger.log("No results found.");
+            return;
+        }
+
         int index = 1;
         foreach (var drone in result)
         {
@@ -29,6 +40,11 @@ public static class ReportGenerator
     public static void ShowAvailableDroneModels(ICommandLogger logger, List<Drone> drones, DroneAnalyzer analyzer)
     {
         List<string> models = analyzer.GetAvailableDroneModels(drones);
+        if (models.Count == 0)
+        {
+            logger.log("No results found.");
+            return;
+        }
         foreach (var model in models)
         {
             logger.log(model);
@@ -48,9 +64,18 @@ public static class ReportGenerator
     public static void ShowAverageBatteryHealthByModel(ICommandLogger logger, List<Drone> drones, DroneAnalyzer analyzer)
     {
         Dictionary<string, double> healths = analyzer.GetAverageBatteryHealthPerModel(drones);
-        foreach (var pair in healths)
+        string[] requiredModels = { "Falcon-X", "Raven-M", "SkyEye-2", "CargoBee", "Storm-4", "Scout-Lite" };
+
+        foreach (var model in requiredModels)
         {
-            logger.log($"{pair.Key}: {pair.Value}");
+            if (healths.ContainsKey(model))
+            {
+                logger.log($"{model}: {Math.Round(healths[model], 2)}");
+            }
+            else
+            {
+                logger.log($"{model}: N/A");
+            }
         }
     }
     public static void ShowModelWithHighestCompletedMissions(ICommandLogger logger, List<Drone> drones, DroneAnalyzer analyzer)
