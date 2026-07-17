@@ -15,8 +15,8 @@ class Program
 {
     static void Main()
     {
-
-        string rootDirectory = Directory.GetCurrentDirectory();
+        // The root folder from which the program ran
+        string rootDirectory = AppContext.BaseDirectory;
 
         string pathOfCleanJson = Path.Combine(rootDirectory, "output","drones_clean.json");
         string rawFilePath = Path.Combine(rootDirectory, "input", "raw","drones_raw.json");
@@ -27,26 +27,21 @@ class Program
         string nullPath = Path.Combine(rootDirectory, "input", "test_scenarios", "drones_null.json");
         string nonExistsPath = Path.Combine(rootDirectory, "input", "test_scenarios", "non_exists.json");
 
+        string selectedPath = rawFilePath;
+
         string reportFilePath = Path.Combine(rootDirectory, "output", "analysis_report.txt");
 
         ICommandLogger consoleLogger = new ConsoleLogger();
-        //IDroneDataLoader dataLoader = new LoadFromJson(rawFilePath);
 
-        IDroneDataLoader dataLoader = new LoadFromJson(allInvalidPath);
-        //IDroneDataLoader dataLoader = new LoadFromJson(nonExistsPath);
-        //IDroneDataLoader dataLoader = new LoadFromJson(dronesEmptyPath);
-        //IDroneDataLoader dataLoader = new LoadFromJson(malformedPath);
-        //IDroneDataLoader dataLoader = new LoadFromJson(nullPath);
+        IDroneDataLoader dataLoader = new LoadFromJson(selectedPath);
+        
 
         ProcessPipeline pipeline = new ProcessPipeline(consoleLogger, dataLoader);
 
-        //pipeline.Run(rawFilePath, pathOfCleanJson,reportFilePath);
+        
 
-        pipeline.Run(allInvalidPath, pathOfCleanJson, reportFilePath);
-        //pipeline.Run(dronesEmptyPath, pathOfCleanJson, reportFilePath);
-        //pipeline.Run(malformedPath, pathOfCleanJson, reportFilePath);
-        //pipeline.Run(nullPath, pathOfCleanJson, reportFilePath);
-        //pipeline.Run(nonExistsPath, pathOfCleanJson, reportFilePath);
+        pipeline.Run(pathOfCleanJson, reportFilePath);
+        
 
 
 

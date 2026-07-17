@@ -22,7 +22,7 @@ public class ProcessPipeline
         _dataLoader = dataLoader;
     }
 
-    public void Run(string rawFilePath, string pathOfCleanJson, string reportFilePath)
+    public void Run(string pathOfCleanJson, string reportFilePath)
     {
         _consoleLogger.log("=== Drone Fleet Data Processing System ===");
         _consoleLogger.log("");
