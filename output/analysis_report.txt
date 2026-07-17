@@ -10,23 +10,14 @@ DR-0015 | CargoBee | East | Maintenance
 DR-0065 | Scout-Lite | West | Grounded
 DR-0007 | Storm-4 | North | Training
 DR-0001 | Scout-Lite | North | Training
-DR-0019 | Scout-Lite | North | Operational
-DR-0073 | CargoBee | East | Operational
 DR-0003 | SkyEye-2 | West | Grounded
 DR-0013 | Scout-Lite | North | Training
 DR-0033 | SkyEye-2 | East | Training
-DR-0049 | Storm-4 | East | Operational
 DR-0048 | Raven-M | Central | Training
-DR-0081 | CargoBee | East | Operational
 DR-0043 | Raven-M | East | Maintenance
 DR-0042 | CargoBee | West | Maintenance
-DR-0035 | Raven-M | Central | Operational
-DR-0075 | Scout-Lite | South | Operational
-DR-0062 | Raven-M | Central | Operational
 DR-0008 | Scout-Lite | West | Maintenance
-DR-0011 | Falcon-X | South | Operational
 DR-0022 | SkyEye-2 | South | Maintenance
-DR-0054 | Storm-4 | South | Operational
 DR-0004 | Falcon-X | Central | Grounded
 DR-0061 | SkyEye-2 | East | Training
 DR-0017 | Raven-M | West | Grounded
@@ -36,16 +27,13 @@ DR-0025 | Falcon-X | East | Grounded
 DR-0080 | SkyEye-2 | East | Training
 DR-0055 | CargoBee | East | Training
 DR-0076 | SkyEye-2 | North | Maintenance
-DR-0078 | SkyEye-2 | North | Operational
 DR-0056 | Scout-Lite | East | Grounded
-DR-0068 | Falcon-X | Central | Operational
 DR-0053 | Raven-M | East | Training
 DR-0083 | CargoBee | Central | Grounded
 DR-0044 | Falcon-X | Central | Training
 DR-0027 | CargoBee | South | Grounded
 DR-0046 | CargoBee | Central | Maintenance
 DR-0069 | Raven-M | South | Maintenance
-DR-0020 | Raven-M | West | Operational
 DR-0005 | Storm-4 | South | Maintenance
 DR-0006 | Scout-Lite | South | Grounded
 DR-0040 | Storm-4 | East | Grounded
@@ -55,7 +43,6 @@ DR-0052 | Scout-Lite | North | Maintenance
 DR-0030 | Falcon-X | South | Training
 DR-0060 | Scout-Lite | East | Training
 DR-0036 | Falcon-X | South | Grounded
-DR-0024 | CargoBee | Central | Operational
 DR-0002 | Storm-4 | West | Grounded
 DR-0032 | Raven-M | South | Training
 DR-0051 | SkyEye-2 | West | Training
@@ -72,23 +59,16 @@ DR-0071 | Falcon-X | Central | Training
 DR-0009 | SkyEye-2 | West | Grounded
 DR-0045 | Falcon-X | East | Maintenance
 DR-0041 | Falcon-X | East | Grounded
-DR-0012 | Raven-M | South | Operational
-DR-0057 | Scout-Lite | East | Operational
 DR-0023 | CargoBee | Central | Grounded
 DR-0010 | Falcon-X | South | Maintenance
 DR-0018 | Falcon-X | West | Maintenance
 DR-0026 | Scout-Lite | Central | Grounded
 DR-0063 | Storm-4 | South | Grounded
 DR-0037 | Storm-4 | Central | Maintenance
-DR-0079 | SkyEye-2 | North | Operational
 DR-0028 | Scout-Lite | Central | Maintenance
-DR-0058 | Storm-4 | West | Operational
 DR-0034 | Scout-Lite | East | Training
-DR-0016 | Falcon-X | East | Operational
-DR-0072 | Storm-4 | West | Operational
 DR-0050 | CargoBee | East | Grounded
 DR-0067 | CargoBee | East | Grounded
-DR-0064 | Falcon-X | North | Operational
 
 TOP 5 DRONES BY FLIGHT HOURS
 1. DR-0064 | Falcon-X | 2490
@@ -123,3 +103,8 @@ Falcon-X: 52.06666666666667
 MODEL WITH HIGHEST TOTAL COMPLETED MISSIONS
 Model: Falcon-X
 Total completed missions: 18083
+SELECTED ADDITIONAL ANALYSIS
+ANALYSISAnalysis name: Top Three Models By Average Flight Hours
+Storm-4
+Falcon-X
+SkyEye-2

@@ -184,5 +184,10 @@ public class ProcessPipeline
 
         fileLogger.log("MODEL WITH HIGHEST TOTAL COMPLETED MISSIONS");
         ReportGenerator.ShowModelWithHighestCompletedMissions(fileLogger, cleanDrones, analyzer);
+
+        fileLogger.log("SELECTED ADDITIONAL ANALYSIS");
+        fileLogger.log($"ANALYSISAnalysis name: Top Three Models By Average Flight Hours");
+        ReportGenerator.ShowTopThreeModelsByAverageFlightHours(fileLogger, cleanDrones, analyzer);
+
     }
 }
