@@ -11,6 +11,7 @@ using DroneFleetDataProcessing.Queries;
 
 namespace DroneFleetDataProcessing.Pipeline;
 
+// Process pipline
 public class ProcessPipeline
 {
     private readonly ICommandLogger _consoleLogger;
@@ -22,7 +23,7 @@ public class ProcessPipeline
         _dataLoader = dataLoader;
     }
 
-    public void Run(string rawFilePath, string pathOfCleanJson, string reportFilePath)
+    public void Run(string pathOfCleanJson, string reportFilePath)
     {
         _consoleLogger.log("=== Drone Fleet Data Processing System ===");
         _consoleLogger.log("");
@@ -30,6 +31,7 @@ public class ProcessPipeline
         List<Drone> rawDrones;
         try
         {
+            // Reading data from the file
             rawDrones = _dataLoader.LoadData();
             _consoleLogger.log($"Read {rawDrones.Count} records from raw file");
         }
@@ -66,7 +68,8 @@ public class ProcessPipeline
 
         _consoleLogger.log("");
         _consoleLogger.log("Step 2: Validating data and creating clean dataset...");
-        
+
+        // Drone data verification
         ValidationResult validResult = DroneCollectionValidator.ValidateAll(rawDrones);
         
         _consoleLogger.log($"Valid records: {validResult.ValidDrones.Count}");
@@ -80,10 +83,20 @@ public class ProcessPipeline
 
         _consoleLogger.log("");
         _consoleLogger.log("Step 3: Saving clean data...");
+        // Saving the correct drones to a file
         try
         {
+            string? outputDir = Path.GetDirectoryName(pathOfCleanJson);
+
+            if (outputDir != null && !Directory.Exists(outputDir))
+            {
+                Directory.CreateDirectory(outputDir);
+            }
+
             LoadFromJson.SaveToJson(pathOfCleanJson, validResult.ValidDrones);
+
             string fullCleanPath = Path.GetFullPath(pathOfCleanJson);
+
             _consoleLogger.log($"Clean data saved to: {fullCleanPath}");
         }
         catch (UnauthorizedAccessException ex)
@@ -102,6 +115,7 @@ public class ProcessPipeline
         List<Drone> cleanDrones;
         try
         {
+            // load validate drones
             IDroneDataLoader cleanDataLoader = new LoadFromJson(pathOfCleanJson);
             cleanDrones = cleanDataLoader.LoadData();
             _consoleLogger.log($"Loaded {cleanDrones.Count} records from clean dataset");
@@ -156,6 +170,7 @@ public class ProcessPipeline
 
             ICommandLogger fileLogger = new FileLogger(reportFilePath);
 
+            // create the FileReport
             GenerateFileReport(fileLogger, rawDrones.Count, validResult, cleanDrones, analyzer);
 
             string fullReportPath = Path.GetFullPath(reportFilePath);
@@ -170,8 +185,9 @@ public class ProcessPipeline
         _consoleLogger.log("=== Process completed successfully! ===");
     }
 
+    // Report to file process flow method
     private void GenerateFileReport(ICommandLogger fileLogger, int totalRawCount, ValidationResult validResult, List<Drone> cleanDrones, DroneAnalyzer analyzer)
-    {
+    {   
         fileLogger.log("DRONE FLEET ANALYSIS REPORT");
         fileLogger.log("");
         fileLogger.log("PROCESSING SUMMARY");

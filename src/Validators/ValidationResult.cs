@@ -2,6 +2,7 @@ using DroneFleetDataProcessing.Models.Sensors;
 
 namespace DroneFleetDataProcessing.Validators
 {
+    // Validation result object
     public class ValidationResult
     {
         public List<Drone> ValidDrones { get; }

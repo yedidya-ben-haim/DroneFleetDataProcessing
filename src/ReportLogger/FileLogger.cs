@@ -1,18 +1,20 @@
 using System;
 using System.IO;
 namespace DroneFleetDataProcessing.ReportLogger;
+
+// file writing Logger
 public class FileLogger : ICommandLogger
 {
-    private readonly string filePath;
+    private readonly string _filePath;
 
     public FileLogger(string path)
     {
-        filePath = path;
-        File.WriteAllText(filePath, string.Empty);
+        _filePath = path;
+        File.WriteAllText(_filePath, string.Empty);
     }
 
     public void log(string str)
     { 
-        File.AppendAllText(filePath, $"{str}{Environment.NewLine}");
+        File.AppendAllText(_filePath, $"{str}{Environment.NewLine}");
     }
 }

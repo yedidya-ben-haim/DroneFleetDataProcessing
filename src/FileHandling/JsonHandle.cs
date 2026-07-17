@@ -7,6 +7,7 @@ using DroneFleetDataProcessing.Exceptions;
 
 namespace DroneFleetDataProcessing.FileHandling;
 
+// JSON file loading class
 public class LoadFromJson : IDroneDataLoader
 {
     private readonly string Path;
@@ -42,6 +43,7 @@ public class LoadFromJson : IDroneDataLoader
         return drones;
     }
 
+    // Saving objects to a file method
     public static void SaveToJson(string path, List<Drone> drones) 
     {
         if(drones == null)

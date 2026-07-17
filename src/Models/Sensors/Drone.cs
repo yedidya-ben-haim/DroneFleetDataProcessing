@@ -1,5 +1,6 @@
 namespace DroneFleetDataProcessing.Models.Sensors;
 
+// Represents a drone-type sensor
 public class Drone
 {
     public int id { get; set; }
