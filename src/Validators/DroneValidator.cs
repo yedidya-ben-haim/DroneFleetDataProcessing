@@ -2,6 +2,7 @@ using DroneFleetDataProcessing.Models.Sensors;
 
 namespace DroneFleetDataProcessing.Validators
 {
+    // Drone Field Validation
     public static class DroneValidator
     {
         // ValidValues
@@ -61,12 +62,15 @@ namespace DroneFleetDataProcessing.Validators
 
 
 
-        // Field chacking methods
+        // Field checking methods
+
+        // id check
         private static bool IsIdValid(int id)
         {
             return id > 0;
         }
 
+        // Serial Number check
         private static bool IsSerialNumberValid(string? serialNumber)
         {
             const int ValidSerialNumberLength = 7;
@@ -77,31 +81,37 @@ namespace DroneFleetDataProcessing.Validators
             if (serialNumber.Length != ValidSerialNumberLength)
                 return false;
 
+            // "DR-" part
             string chars = serialNumber[..3];
+            // "XXXX" part
             string digits = serialNumber[3..];
 
             return chars == "DR-" &&
                    digits.All(character => character is >= '0' and <= '9');
         }
 
+        // Model Valid check
         private static bool IsModelValid(string? model)
         {
             return !string.IsNullOrWhiteSpace(model) && 
                 ValidModels.Contains(model);
         }
 
+        // Category check
         private static bool IsCategoryValid(string? category)
         {
             return !string.IsNullOrWhiteSpace(category) && 
                 ValidCategories.Contains(category);
         }
 
+        // Base Location check
         private static bool IsBaseLocationValid(string? baseLocation)
         {
             return !string.IsNullOrWhiteSpace(baseLocation) && 
                 ValidBaseLocations.Contains(baseLocation);
         }
 
+        // Flight Hours check
         private static bool IsFlightHoursValid(double flightHours)
         {
             const int MaxFlightHours = 2500;
@@ -110,6 +120,7 @@ namespace DroneFleetDataProcessing.Validators
             return flightHours <= MaxFlightHours && flightHours >= MinFlightHours;
         }
 
+        // Battery Health check
         private static bool IsBatteryHealthValid(int batteryHealth)
         {
             const int MaxBatteryHealth = 100;
@@ -118,6 +129,7 @@ namespace DroneFleetDataProcessing.Validators
             return batteryHealth <= MaxBatteryHealth && batteryHealth >= MinBatteryHealth;
         }
 
+        // Max Range Km check
         private static bool IsMaxRangeKmValid(double rangeKm)
         {
             const int MaxRangeKm = 150;
@@ -126,6 +138,7 @@ namespace DroneFleetDataProcessing.Validators
             return rangeKm <= MaxRangeKm && rangeKm >= MinRangeKm;
         }
 
+        // Missions Completed check
         private static bool IsMissionsCompletedValid(int missionsCompleted)
         {
             const int MaxMissionsCompleted = 5000;
@@ -134,12 +147,14 @@ namespace DroneFleetDataProcessing.Validators
             return missionsCompleted <= MaxMissionsCompleted && missionsCompleted >= MinMissionsCompleted;
         }
 
+        // Status check
         private static bool IsStatusValid(string? status)
         {
             return !string.IsNullOrWhiteSpace(status) && 
                 ValidStatuses.Contains(status);
         }
 
+        // Operational Battery Rule check
         private static bool IsOperationalBatteryRuleValid(string? status, int batteryHealth)
         {
             const int MinOperationalBattery = 20;

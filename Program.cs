@@ -18,24 +18,30 @@ class Program
         // The root folder from which the program ran
         string rootDirectory = AppContext.BaseDirectory;
 
+        
         string pathOfCleanJson = Path.Combine(rootDirectory, "output","drones_clean.json");
         string rawFilePath = Path.Combine(rootDirectory, "input", "raw","drones_raw.json");
-        
+
+        // Test routes
         string allInvalidPath = Path.Combine(rootDirectory, "input", "test_scenarios", "drones_all_invalid.json");
         string dronesEmptyPath = Path.Combine(rootDirectory, "input", "test_scenarios", "drones_empty.json");
         string malformedPath = Path.Combine(rootDirectory, "input", "test_scenarios", "drones_malformed.json");
         string nullPath = Path.Combine(rootDirectory, "input", "test_scenarios", "drones_null.json");
         string nonExistsPath = Path.Combine(rootDirectory, "input", "test_scenarios", "non_exists.json");
 
+        // The path chosen for running
         string selectedPath = rawFilePath;
 
+        // Output file path
         string reportFilePath = Path.Combine(rootDirectory, "output", "analysis_report.txt");
 
+        // The console writing object
         ICommandLogger consoleLogger = new ConsoleLogger();
 
+        // Data loading object
         IDroneDataLoader dataLoader = new LoadFromJson(selectedPath);
-        
 
+        // Process Management Object
         ProcessPipeline pipeline = new ProcessPipeline(consoleLogger, dataLoader);
 
         

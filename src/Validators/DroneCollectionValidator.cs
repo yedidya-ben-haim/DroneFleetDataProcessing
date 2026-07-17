@@ -2,6 +2,7 @@ using DroneFleetDataProcessing.Models.Sensors;
 
 namespace DroneFleetDataProcessing.Validators
 {
+    // Validations of unique fields for all drones
     public static class DroneCollectionValidator
     {
         public static ValidationResult ValidateAll(List<Drone> drones)
@@ -29,6 +30,7 @@ namespace DroneFleetDataProcessing.Validators
 
                 if (isValid)
                 {
+                    // Adding a proper object
                     validDrones.Add(drone);
                 }
                 else

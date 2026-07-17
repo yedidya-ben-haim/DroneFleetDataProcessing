@@ -52,36 +52,39 @@ DroneFleetDataProcessing/
 │   ├── drones_clean.json
 │   └── analysis_report.txt
 │
-└── src/
-    ├── Exceptions/
-    │   └── ExceptionsMessage.cs
-    │
-    ├── FileHandling/
-    │   └── JsonHandle.cs
-    │
-    ├── Models/
-    │   └── Sensors/
-    │       └── Drone.cs
-    │
-    ├── Pipeline/
-    │   └── ProcessPipeline.cs
-    │
-    ├── Queries/
-    │   └── DroneAnalyzer.cs
-    │
-    ├── ReportLogger/
-    │   ├── ICommandLogger.cs
-    │   ├── ConsoleLogger.cs
-    │   └── FileLogger.cs
-    │
-    ├── Storage/
-    │   └── DroneRepository.cs
-    │
-    └── Validators/
-        ├── IValidator.cs
-        ├── DroneValidator.cs
-        ├── DroneCollectionValidator.cs
-        └── ValidationResult.cs
+├── src/
+│   ├── Exceptions/
+│   │   └── ExceptionsMessage.cs
+│   │
+│   ├── FileHandling/
+│   │   ├── IDroneDataLoader.cs
+│   │   └── JsonHandle.cs
+│   │
+│   ├── Models/
+│   │   └── Sensors/
+│   │       └── Drone.cs
+│   │
+│   ├── Pipeline/
+│   │   └── ProcessPipeline.cs
+│   │
+│   ├── Queries/
+│   │   └── DroneAnalyzer.cs
+│   │
+│   ├── ReportLogger/
+│   │   ├── ICommandLogger.cs
+│   │   ├── ConsoleLogger.cs
+│   │   ├── FileLogger.cs
+│   │   └── ReportGenerators.cs
+│   │
+│   └── Validators/
+│       ├── DroneValidator.cs
+│       ├── DroneCollectionValidator.cs
+│       └── ValidationResult.cs
+│
+├── .gitattributes
+├── .gitignore
+├── Program.cs
+└── README.md
 ```
 
 
@@ -221,8 +224,8 @@ dotnet run
 
 ## Division of responsibility
 
-### Pesach: FileHandling, Models, Exceptions, ReportLogger, Storage, 
+### Pesach: FileHandling, Models, Exceptions, ReportLogger, Exceptions, Pipeline, Queries, ReportLogger
 
-### Yedidya: Validators, README, GitHub
+### Yedidya: Validators, README, GitHub, Models, FileHandling, Pipeline, Queries, ReportLogger
 
 </div>
