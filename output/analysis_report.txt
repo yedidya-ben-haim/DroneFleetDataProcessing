@@ -1,0 +1,111 @@
+DRONE FLEET ANALYSIS REPORT
+
+PROCESSING SUMMARY
+Total raw records: 100
+Valid records: 83
+Rejected records: 17
+
+NON-OPERATIONAL DRONES
+DR-0015 | CargoBee | East | Maintenance
+DR-0065 | Scout-Lite | West | Grounded
+DR-0007 | Storm-4 | North | Training
+DR-0001 | Scout-Lite | North | Training
+DR-0003 | SkyEye-2 | West | Grounded
+DR-0013 | Scout-Lite | North | Training
+DR-0033 | SkyEye-2 | East | Training
+DR-0048 | Raven-M | Central | Training
+DR-0043 | Raven-M | East | Maintenance
+DR-0042 | CargoBee | West | Maintenance
+DR-0008 | Scout-Lite | West | Maintenance
+DR-0022 | SkyEye-2 | South | Maintenance
+DR-0004 | Falcon-X | Central | Grounded
+DR-0061 | SkyEye-2 | East | Training
+DR-0017 | Raven-M | West | Grounded
+DR-0014 | Falcon-X | West | Maintenance
+DR-0074 | Raven-M | North | Grounded
+DR-0025 | Falcon-X | East | Grounded
+DR-0080 | SkyEye-2 | East | Training
+DR-0055 | CargoBee | East | Training
+DR-0076 | SkyEye-2 | North | Maintenance
+DR-0056 | Scout-Lite | East | Grounded
+DR-0053 | Raven-M | East | Training
+DR-0083 | CargoBee | Central | Grounded
+DR-0044 | Falcon-X | Central | Training
+DR-0027 | CargoBee | South | Grounded
+DR-0046 | CargoBee | Central | Maintenance
+DR-0069 | Raven-M | South | Maintenance
+DR-0005 | Storm-4 | South | Maintenance
+DR-0006 | Scout-Lite | South | Grounded
+DR-0040 | Storm-4 | East | Grounded
+DR-0077 | Storm-4 | North | Training
+DR-0059 | SkyEye-2 | Central | Training
+DR-0052 | Scout-Lite | North | Maintenance
+DR-0030 | Falcon-X | South | Training
+DR-0060 | Scout-Lite | East | Training
+DR-0036 | Falcon-X | South | Grounded
+DR-0002 | Storm-4 | West | Grounded
+DR-0032 | Raven-M | South | Training
+DR-0051 | SkyEye-2 | West | Training
+DR-0031 | CargoBee | South | Grounded
+DR-0029 | CargoBee | West | Training
+DR-0066 | Scout-Lite | North | Training
+DR-0047 | Raven-M | East | Maintenance
+DR-0082 | Raven-M | South | Training
+DR-0021 | Scout-Lite | West | Maintenance
+DR-0039 | Scout-Lite | West | Maintenance
+DR-0038 | SkyEye-2 | East | Training
+DR-0070 | Raven-M | Central | Training
+DR-0071 | Falcon-X | Central | Training
+DR-0009 | SkyEye-2 | West | Grounded
+DR-0045 | Falcon-X | East | Maintenance
+DR-0041 | Falcon-X | East | Grounded
+DR-0023 | CargoBee | Central | Grounded
+DR-0010 | Falcon-X | South | Maintenance
+DR-0018 | Falcon-X | West | Maintenance
+DR-0026 | Scout-Lite | Central | Grounded
+DR-0063 | Storm-4 | South | Grounded
+DR-0037 | Storm-4 | Central | Maintenance
+DR-0028 | Scout-Lite | Central | Maintenance
+DR-0034 | Scout-Lite | East | Training
+DR-0050 | CargoBee | East | Grounded
+DR-0067 | CargoBee | East | Grounded
+
+TOP 5 DRONES BY FLIGHT HOURS
+1. DR-0064 | Falcon-X | 2490
+2. DR-0054 | Storm-4 | 2467.1
+3. DR-0044 | Falcon-X | 2436.4
+4. DR-0051 | SkyEye-2 | 2386.3
+5. DR-0048 | Raven-M | 2374.5
+
+AVAILABLE DRONE MODELS
+CargoBee
+Scout-Lite
+Storm-4
+SkyEye-2
+Raven-M
+Falcon-X
+
+DRONES BY BASE
+North: 12
+South: 16
+Central: 16
+East: 23
+West: 16
+
+AVERAGE BATTERY HEALTH BY MODEL
+Falcon-X: 52.07
+Raven-M: 57.57
+SkyEye-2: 49.33
+CargoBee: 54.79
+Storm-4: 54.45
+Scout-Lite: 55.59
+
+MODEL WITH HIGHEST TOTAL COMPLETED MISSIONS
+Model: Falcon-X
+Total completed missions: 18083
+
+SELECTED ADDITIONAL ANALYSIS
+Analysis name: Top Three Models By Average Flight Hours
+Storm-4
+Falcon-X
+SkyEye-2
