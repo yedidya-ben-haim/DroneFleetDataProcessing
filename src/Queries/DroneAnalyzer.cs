@@ -34,7 +34,17 @@ public class DroneAnalyzer
         if (drones == null || drones.Count == 0) return null;
         return drones.Where(r => r.model != null).GroupBy(r => r.model).OrderByDescending(group => group.Sum(r => r.missionsCompleted)).Select(g => g.Key).FirstOrDefault();
     }
-    public List<string> GetTopThreeModelsByAverageFlightHours(List<Drone> drones)
+        public Dictionary<string, double> GetAverageBatteryHealthPerModel(List<Drone> drones)
+        {
+            if (drones == null) return [];
+            return drones.Where(r => r.model != null).GroupBy(r => r.model).ToDictionary(group => group.Key!,group => group.Average(r => r.batteryHealth));
+        }
+        public string? GetModelWithMostCompletedMissions(List<Drone> drones)
+        {
+            if (drones == null || drones.Count == 0) return null;
+            return drones.Where(r => r.model != null).GroupBy(r => r.model).OrderByDescending(group => group.Sum(r => r.missionsCompleted)).Select(g => g.Key).FirstOrDefault();
+        }
+  public List<string> GetTopThreeModelsByAverageFlightHours(List<Drone> drones)
     {
         if (drones == null)
             return [];
